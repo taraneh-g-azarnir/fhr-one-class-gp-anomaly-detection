@@ -1,86 +1,87 @@
 # Fetal Well-Being Prediction with One-Class Gaussian Process Anomaly Detection
 
-Code for the EUSIPCO 2025 paper on one-class Gaussian Process–based anomaly detection for fetal heart rate (FHR) analysis.
+This repository contains the implementation of the method proposed in:
+
+**“Fetal Well-Being Prediction with One-Class Gaussian Process Anomaly Detection”**  
+*EUSIPCO 2025*
 
 ---
 
 ## Overview
 
-Fetal heart rate (FHR) monitoring is essential for assessing fetal well-being, but detecting pathological patterns is challenging due to limited labeled abnormal data.
+Fetal heart rate (FHR) monitoring is a key tool for assessing fetal well-being during pregnancy. However, detecting pathological patterns remains challenging due to the scarcity of labeled abnormal data.
 
-This repository implements a one-class learning framework based on Gaussian Processes to detect abnormal FHR patterns using only healthy training data.
+This work formulates fetal risk assessment as a **one-class anomaly detection problem**, where models are trained exclusively on **healthy (CAT-1)** data and used to detect deviations corresponding to **pathological (CAT-3)** conditions.
 
----
-
-## Paper
-
-This repository corresponds to the following paper:
-
-Fetal Well-Being Prediction with One-Class Gaussian Process Anomaly Detection  
-EUSIPCO 2025
+We propose a framework based on **Gaussian Process (GP) regression** to model the conditional distribution of each feature and derive interpretable anomaly scores.
 
 ---
 
-## Repository Structure
-```text
-fhr-one-class-gp-anomaly-detection/
-├── src/
-├── results/
-├── README.md
-├── requirements.txt
-├── LICENSE
-└── .gitignore
-```
+## Method Summary
+
+### 1. Feature Representation
+FHR signals are segmented and transformed into clinically meaningful features.
+
+### 2. One-Class Gaussian Process Modeling
+Each feature is modeled using a Gaussian Process conditioned on the remaining features.
+
+### 3. Anomaly Scoring
+Standardized residuals are used to compute anomaly scores.
+
+### 4. Ensemble Detection
+Per-feature scores are combined into a global anomaly score.
 
 ---
 
 ## Data
 
-This repository expects a feature table extracted from fetal heart rate signals.
+### Feature File
+Each row corresponds to a 10-minute FHR segment.
 
-Feature extraction is provided in the companion repository:
-https://github.com/taraneh-g-azarnir/fhr-feature-extraction
+### Label File
+Contains:
+cat ∈ {CAT-1, CAT-3}
 
-The dataset used in this work is based on:
-https://preana-fo.ece.stonybrook.edu/database.html
+Each label corresponds to 3 consecutive segments.
 
 ---
 
 ## Installation
+
 ```bash
 git clone https://github.com/taraneh-g-azarnir/fhr-one-class-gp-anomaly-detection.git
 cd fhr-one-class-gp-anomaly-detection
 pip install -r requirements.txt
 ```
+
 ---
 
 ## Usage
 
-Run the main pipeline:
-
 ```bash
-python src/your_main_script.py
+python src/main.py   --features data/fhr_features.xlsx   --labels data/labels.xlsx   --output results/
 ```
----
-
-## Method Summary
-
-The pipeline includes:
-
-- preprocessing of FHR feature data  
-- training one-class Gaussian Process models on healthy samples  
-- computing anomaly scores  
-- evaluating detection performance on abnormal cases  
 
 ---
 
 ## Output
 
-The pipeline produces:
+- Anomaly scores  
+- Confidence scores  
+- Evaluation metrics  
 
-- anomaly scores for each sample  
-- classification decisions  
-- evaluation metrics (e.g., AUROC, precision-recall)  
+---
+
+## Citation
+
+```bibtex
+@inproceedings{ghanbari2025ocgp,
+  title={Fetal Well-Being Prediction with One-Class Gaussian Process Anomaly Detection},
+  author={Ghanbari Azarnir, Taraneh and others},
+  booktitle={EUSIPCO},
+  year={2025}
+}
+```
 
 ---
 
